@@ -1,10 +1,10 @@
 const express = require('express');
-const { CreateProfile } = require('../controllers/ProfileController');
+const { CreateProfile,UserLogin } = require('../controllers/ProfileController');
 const router=express.Router();
 
 
-router.get("/CreateProfile",CreateProfile)
-
+router.post("/CreateProfile",CreateProfile)
+router.post("/UserLogin",UserLogin)
 
 
 
