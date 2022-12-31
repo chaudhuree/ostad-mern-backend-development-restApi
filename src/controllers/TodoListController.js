@@ -28,3 +28,18 @@ exports.CreateToDo = (req, res) => {
     }
   });
 }
+
+
+// docs: getTodo 
+exports.SelectToDo = (req, res) => {
+  const  decoded  = req.decoded;
+  let UserName = decoded.data.UserName;
+
+  TodoListModel.find({ UserName: UserName }, (err, data) => {
+    if (err) {
+      res.status(500).json({ message: "fetching data error", data: err.message });
+    } else {
+      res.status(200).json({ message: "successfully data is fetched", data: data });
+    }
+  })
+}

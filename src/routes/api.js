@@ -2,7 +2,7 @@ const express = require('express');
 const { CreateProfile,UserLogin,SelectProfile,UpdateProfile } = require('../controllers/ProfileController');
 const {AuthVerifyMiddleWare}=require('../middleware/AuthVerifyMiddleware');
 const router=express.Router();
-const { CreateToDo } = require('../controllers/TodoListController');
+const { CreateToDo,SelectToDo } = require('../controllers/TodoListController');
 
 // user authentication routes
 router.post("/CreateProfile",CreateProfile)
@@ -13,6 +13,7 @@ router.get("/UpdateProfile",AuthVerifyMiddleWare,UpdateProfile)
 
 // todolist routes
 router.post("/CreateToDo",AuthVerifyMiddleWare,CreateToDo)
+router.get("/SelectToDo",AuthVerifyMiddleWare,SelectToDo)
 
 
 
