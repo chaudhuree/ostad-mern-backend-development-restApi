@@ -2,14 +2,14 @@ const TodoListModel = require('../models/TodoListModel');
 
 
 exports.CreateToDo = (req, res) => {
-  let {TodoSubject,TodoDescription} = req.body;
-  const  decoded  = req.decoded;
+  let { TodoSubject, TodoDescription } = req.body;
+  const decoded = req.decoded;
   let UserName = decoded.data.UserName;
-  let TodoStatus="New";
+  let TodoStatus = "New";
   // let TodoCreateDate=Date.now();
   // let TodoUpdateDate=Date.now();
 
-  let PostBody={
+  let PostBody = {
     UserName,
     TodoSubject,
     TodoDescription,
@@ -32,7 +32,7 @@ exports.CreateToDo = (req, res) => {
 
 // docs: getTodo 
 exports.SelectToDo = (req, res) => {
-  const  decoded  = req.decoded;
+  const decoded = req.decoded;
   let UserName = decoded.data.UserName;
 
   TodoListModel.find({ UserName: UserName }, (err, data) => {
@@ -45,64 +45,80 @@ exports.SelectToDo = (req, res) => {
 }
 
 // docs: updateTodo
-exports.UpdateToDo=(req,res)=>{
+exports.UpdateToDo = (req, res) => {
 
-  let TodoSubject=req.body['TodoSubject']
-  let TodoDescription=  req.body['TodoDescription']
-  let _id=  req.body['_id']
-  let TodoUpdateDate=Date.now();
+  let TodoSubject = req.body['TodoSubject']
+  let TodoDescription = req.body['TodoDescription']
+  let _id = req.body['_id']
+  let TodoUpdateDate = Date.now();
 
-  let PostBody={
-      TodoSubject:TodoSubject,
-      TodoDescription:TodoDescription,
-      TodoUpdateDate:TodoUpdateDate,
+  let PostBody = {
+    TodoSubject: TodoSubject,
+    TodoDescription: TodoDescription,
+    TodoUpdateDate: TodoUpdateDate,
   }
 
-  TodoListModel.updateOne({_id:_id},{$set:PostBody},{upsert:true},(err,data)=>{
-      if(err){
-          res.status(400).json({status:"fail",data:err})
-      }
-      else {
-          res.status(200).json({status:"success",data:data})
-      }
+  TodoListModel.updateOne({ _id: _id }, { $set: PostBody }, { upsert: true }, (err, data) => {
+    if (err) {
+      res.status(400).json({ status: "fail", data: err })
+    }
+    else {
+      res.status(200).json({ status: "success", data: data })
+    }
   })
 
 }
 
 // docs: update status
-exports.UpdateStatusToDo=(req,res)=>{
+exports.UpdateStatusToDo = (req, res) => {
 
-  let TodoStatus=req.body['TodoStatus']
-  let _id=  req.body['_id']
-  let TodoUpdateDate=Date.now();
+  let TodoStatus = req.body['TodoStatus']
+  let _id = req.body['_id']
+  let TodoUpdateDate = Date.now();
 
-  let PostBody={
-      TodoStatus:TodoStatus,
-      TodoUpdateDate:TodoUpdateDate,
+  let PostBody = {
+    TodoStatus: TodoStatus,
+    TodoUpdateDate: TodoUpdateDate,
   }
 
-  TodoListModel.updateOne({_id:_id},{$set:PostBody},{upsert:true},(err,data)=>{
-      if(err){
-          res.status(400).json({status:"fail",data:err})
-      }
-      else {
-          res.status(200).json({status:"success",data:data})
-      }
+  TodoListModel.updateOne({ _id: _id }, { $set: PostBody }, { upsert: true }, (err, data) => {
+    if (err) {
+      res.status(400).json({ status: "fail", data: err })
+    }
+    else {
+      res.status(200).json({ status: "success", data: data })
+    }
   })
 
 }
 
 // docs: delete todo
-exports.RemoveToDo=(req,res)=>{
+exports.RemoveToDo = (req, res) => {
 
-  let _id=  req.body['_id']
+  let _id = req.body['_id']
 
-  TodoListModel.remove({_id:_id},(err,data)=>{
-      if(err){
-          res.status(400).json({status:"fail",data:err})
-      }
-      else {
-          res.status(200).json({status:"success",data:data})
-      }
+  TodoListModel.remove({ _id: _id }, (err, data) => {
+    if (err) {
+      res.status(400).json({ status: "fail", data: err })
+    }
+    else {
+      res.status(200).json({ status: "success", data: data })
+    }
+  })
+}
+
+
+//docs: filter by status
+exports.SelectToDoByStatus = (req, res) => {
+  const decoded = req.decoded;
+  let UserName = decoded.data.UserName;
+  let TodoStatus = req.body['TodoStatus']
+  TodoListModel.find({ UserName: UserName, TodoStatus: TodoStatus }, (err, data) => {
+    if (err) {
+      res.status(400).json({ status: "fail", data: err })
+    }
+    else {
+      res.status(200).json({ status: "success", data: data })
+    }
   })
 }
