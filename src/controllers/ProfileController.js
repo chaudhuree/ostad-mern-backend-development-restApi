@@ -36,7 +36,17 @@ exports.UserLogin = (req, res) => {
         // secret token key generated from jwt
         let Secret = "123456789"
         let token = jwt.sign(Payload, Secret)
-        
+        ProfileModel.updateOne({ UserName},{$set:{Token:token}},{upsert:true},(err,data)=>{
+          if(err){
+            res.status(500).json({ message: "failed in updating user data", data: err.message });
+          }
+          else{
+            console.log(data)
+          }
+        }
+          )
+
+
         res.status(200).json({ message: "user login successfully", data: data, token });
       }
       else {
@@ -66,7 +76,7 @@ exports.UserLogin = (req, res) => {
 
 // docs: getProfile 
 exports.SelectProfile = (req, res) => {
-  const { decoded } = req;
+  const  decoded  = req.decoded;
   let userName = decoded.data.UserName;
 
   ProfileModel.findOne({ UserName: userName }, (err, data) => {
@@ -74,6 +84,22 @@ exports.SelectProfile = (req, res) => {
       res.status(500).json({ message: "user selection failed", data: err.message });
     } else {
       res.status(200).json({ message: "user selected successfully", data: data });
+    }
+  })
+}
+//docs: update profile
+exports.UpdateProfile = (req, res) => {
+  const  decoded  = req.decoded;
+  let userName = decoded.data.UserName;
+
+  let {FirstName}= req.body;
+  console.log(userName,FirstName)
+
+  ProfileModel.updateOne({ UserName: userName },{$set:{FirstName}},{upsert:true} ,(err, data) => {
+    if (err) {
+      res.status(500).json({ message: "update failed", data: err.message });
+    } else {
+      res.status(200).json({ message: "user's data updated", data: data });
     }
   })
 }

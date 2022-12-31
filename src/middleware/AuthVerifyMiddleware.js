@@ -1,7 +1,8 @@
 const jwt=require('jsonwebtoken');
 
 exports.AuthVerifyMiddleWare=(req,res,next)=>{
-
+// while requesting to this path in the postman request header this
+// token-key should be present
   let token=req.headers['token-key'];
   if(token){
     let Secret="123456789";
@@ -11,6 +12,8 @@ exports.AuthVerifyMiddleWare=(req,res,next)=>{
       }else{
         // send the full decoded data to the request object
         req.decoded=decoded;
+        // set req.headers.email to the decoded email
+        req.headers.email=decoded['data']['Email']
         next();
       }
     })
