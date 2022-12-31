@@ -44,6 +44,7 @@ exports.SelectToDo = (req, res) => {
   })
 }
 
+// docs: updateTodo
 exports.UpdateToDo=(req,res)=>{
 
   let TodoSubject=req.body['TodoSubject']
@@ -54,6 +55,29 @@ exports.UpdateToDo=(req,res)=>{
   let PostBody={
       TodoSubject:TodoSubject,
       TodoDescription:TodoDescription,
+      TodoUpdateDate:TodoUpdateDate,
+  }
+
+  TodoListModel.updateOne({_id:_id},{$set:PostBody},{upsert:true},(err,data)=>{
+      if(err){
+          res.status(400).json({status:"fail",data:err})
+      }
+      else {
+          res.status(200).json({status:"success",data:data})
+      }
+  })
+
+}
+
+// docs: update status
+exports.UpdateStatusToDo=(req,res)=>{
+
+  let TodoStatus=req.body['TodoStatus']
+  let _id=  req.body['_id']
+  let TodoUpdateDate=Date.now();
+
+  let PostBody={
+      TodoStatus:TodoStatus,
       TodoUpdateDate:TodoUpdateDate,
   }
 

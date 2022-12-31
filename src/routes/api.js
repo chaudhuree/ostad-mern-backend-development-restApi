@@ -3,7 +3,7 @@ const router = express.Router();
 const { CreateProfile, UserLogin, SelectProfile, UpdateProfile } = require('../controllers/ProfileController');
 const { AuthVerifyMiddleWare } = require('../middleware/AuthVerifyMiddleware');
 
-const { CreateToDo, SelectToDo,UpdateToDo } = require('../controllers/TodoListController');
+const { CreateToDo, SelectToDo,UpdateToDo,UpdateStatusToDo } = require('../controllers/TodoListController');
 
   // user authentication routes
   router.post("/CreateProfile", CreateProfile)
@@ -16,6 +16,7 @@ const { CreateToDo, SelectToDo,UpdateToDo } = require('../controllers/TodoListCo
   router.post("/CreateToDo", AuthVerifyMiddleWare, CreateToDo)
   router.get("/SelectToDo", AuthVerifyMiddleWare, SelectToDo)
   router.post("/UpdateToDo", AuthVerifyMiddleWare, UpdateToDo)
+  router.post("/UpdateStatusToDo", AuthVerifyMiddleWare, UpdateStatusToDo)
 
 
 
