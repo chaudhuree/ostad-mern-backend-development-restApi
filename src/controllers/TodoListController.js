@@ -126,7 +126,8 @@ exports.SelectToDoByStatus = (req, res) => {
 exports.SelectToDoByDate = (req, res) => {
   const decoded = req.decoded;
   let UserName = decoded.data.UserName;
-  let FormDate = req.body['FormDate']
+  let FormDate = req.body['FormDate']  
+  //note: date format: 2022-12-31 like mongodb stored date format
   let ToDate = req.body['ToDate']
 
   TodoListModel.find({ UserName: UserName, TodoCreateDate: { $gte: new Date(FormDate), $lte: new Date(ToDate) } }, (err, data) => {
